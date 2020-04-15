@@ -1,0 +1,9 @@
+[package]
+name = "wasmchat"
+version = "0.1.0"
+authors = ["Keith Noguchi <keith.noguchi@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+stdweb = "0.4"
+yew = "0.4"
