@@ -1,0 +1,48 @@
+kind: pipeline
+type: docker
+name: default
+steps:
+  - name: format
+    image: archlinux/base
+    commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup libffi
+      - rustup update stable
+      - rustup target add wasm32-unknown-unknown
+      - cargo install cargo-web
+      - make fmt
+  - name: lint
+    image: archlinux/base
+    commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup libffi
+      - rustup update stable
+      - rustup target add wasm32-unknown-unknown
+      - rustup component add clippy
+      - cargo install cargo-web
+      - cargo clippy -- -D warnings
+  - name: documentation
+    image: archlinux/base
+    commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup
+      - rustup update stable
+      - cargo doc
+  - name: build
+    image: archlinux/base
+    commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup libffi
+      - rustup update stable
+      - rustup target add wasm32-unknown-unknown
+      - cargo install cargo-web
+      - cargo web build --target wasm32-unknown-unknown
+    depends_on:
+      - format
+      - lint
+      - documentation
+  - name: test
+    image: archlinux/base
+    commands:
+      - pacman -Sy --noconfirm make gcc pkgconf rustup libffi chromium
+      - rustup update stable
+      - cargo install cargo-web
+      - cargo web test --target wasm32-unknown-unknown
+    depends_on:
+      - build

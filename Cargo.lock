@@ -366,10 +366,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "daf76fe7d25ac79748a37538b7daeed1c7a6867c92d3245c12c6222e4a20d639"
 
 [[package]]
-name = "wasmchat"
+name = "web_logger"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f50afec20c2e728ca33ffb77d1ed049c8559f1d2e59e0fea36f6586d5bc74683"
+dependencies = [
+ "log",
+ "stdweb",
+ "wasm-bindgen",
+]
+
+[[package]]
+name = "webchat"
 version = "0.1.0"
 dependencies = [
+ "log",
  "stdweb",
+ "web_logger",
  "yew",
 ]
 
